@@ -3,12 +3,17 @@
 
 # Simple demo of the VL53L0X distance sensor.
 # Will print the sensed range/distance every second.
-import time
+from time import time_ns, sleep
 
 import board
 import busio
 
 import adafruit_vl53l0x
+
+
+from udp_client import udpClient
+
+client = udpClient()
 
 # Initialize I2C bus and sensor.
 i2c = busio.I2C(board.SCL, board.SDA)
@@ -24,6 +29,44 @@ vl53 = adafruit_vl53l0x.VL53L0X(i2c)
 # The default timing budget is 33ms, a good compromise of speed and accuracy.
 
 # Main loop will read the range and print it every second.
+t_old = time_ns()
+
+
+#for i in range(400):
+#    client.udpClientSend(i)
+#    sleep(0.05)   
+
+T = 0.08*1e9
+
+min = -1
+max = 0
+cumsum2 = 0
+cumsum = 0
+n = 0
 while True:
-    print("Range: {0}mm".format(vl53.range))
-    #time.sleep(0.2)
+    t_new = time_ns()
+    diff = (t_new - t_old)
+
+    
+    if diff >= T:
+        t_old = t_new
+        range_mm = vl53.range
+        client.udpClientSend(range_mm)   
+        if diff > max:
+            max = diff
+        if diff < min or min < 0:
+            min = diff
+            
+        n += 1
+        cumsum += range_mm**2
+        cumsum2 += range_mm
+        var = cumsum2/n - cumsum/n
+        
+        
+        print(f"diff={diff/1e9:.3f}, min={min/1e9:.3f}, max={max/1e9:.3f}, var={var/1e9:.3f}, n={n}")
+        
+    else:
+        sleep((T-diff)*0.9e-9)
+    #print("Range: {0}mm".format(range_mm))
+
+    
