@@ -1,6 +1,6 @@
 import socket
 
-localIP     = "146.136.88.23"
+#localIP     = "146.136.88.23"
 localPort   = 5555
 bufferSize  = 1024
 
@@ -18,13 +18,17 @@ while(True):
 
     message = bytesAddressPair[0]
 
-    address = bytesAddressPair[1]
+    print(int(message))
+    #num = int(message)
+    #print(int)
 
-    clientMsg = "Message from Client:{}".format(message)
-    clientIP  = "Client IP Address:{}".format(address)
+    #address = bytesAddressPair[1]
+
+    #clientMsg = "Message from Client:{}".format(message)
+    #clientIP  = "Client IP Address:{}".format(address)
     
-    print(clientMsg)
-    print(clientIP)
+    #print(clientMsg)
+    #print(clientIP)
 
     # TODO Call visualization func
 
