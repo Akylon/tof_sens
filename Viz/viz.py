@@ -1,18 +1,40 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-x = np.linspace(0, 6*np.pi, 100)
-y = np.sin(x)
+# --- Class ------------------------------------------------------------------------------
+class ShiftingGraph():
+    def __init__(self, N_samples=100):
+        """ 
+        Arguments:
+          N_samples: Amount of past samples visualized in graph
+        """
+        plt.ion()
+        
+        self.x = np.linspace(0, N_samples)
+        self.y = np.zeros_like(self.x)
 
-# You probably won't need this if you're embedding things in a tkinter plot...
-plt.ion()
+        self.fig = plt.figure()
+        self.ax = self.fig.add_subplot(111)
+        self.ax.set_ylim(0,400)
+        self.ax.set_ylabel("Measured distance (mm)")
+        self.ax.set_xlabel("sample")
+        self.line, = self.ax.plot(self.x, self.y, 'r-') # Returns a tuple of line objects, thus the comma
 
-fig = plt.figure()
-ax = fig.add_subplot(111)
-line1, = ax.plot(x, y, 'r-') # Returns a tuple of line objects, thus the comma
+    def updateViz(self, y_new): 
+        # update y-value array (pop & insert new value for right shifting effect)  
+        self.y = np.insert(self.y[:-1], 0, y_new)
+        
+        # Update plot
+        self.line.set_ydata(self.y)
+        self.fig.canvas.draw()
+        self.fig.canvas.flush_events()
 
-for phase in np.linspace(0, 10*np.pi, 100):
+
+# --- Test Code ------------------------------------------------------------------------------
+sg = ShiftingGraph()
+
+while(1):
     input("")
-    line1.set_ydata(np.sin(x + phase))
-    fig.canvas.draw()
-    fig.canvas.flush_events()
+    sg.updateViz(200)
+    
+
