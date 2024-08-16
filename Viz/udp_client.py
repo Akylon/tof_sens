@@ -2,7 +2,7 @@ import socket
 
 class udpClient:
     def __init__(self):
-        self.UDP_IP = "146.136.40.44"
+        self.UDP_IP = "146.136.40.46"
         self.UDP_PORT = 5555
         #self.MESSAGE = "Hello, World!"
 
