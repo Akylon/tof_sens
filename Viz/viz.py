@@ -1,6 +1,11 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+from time import time_ns, sleep
+
+        
+toSec = 1e9
+
 # --- Class ------------------------------------------------------------------------------
 class ShiftingGraph:
     def __init__(self, N_samples=100):
@@ -32,10 +37,38 @@ class ShiftingGraph:
 
 
 # --- Test Code ------------------------------------------------------------------------------
-sg = ShiftingGraph()
+if __name__ == '__main__':
+    sg = ShiftingGraph()
 
-while(1):
-    input("")
-    sg.updateViz(200)
-    
+    i=0
+
+    first_pass_flag = 1
+
+
+    min = -1
+    max = -1
+    mean = 0
+
+    N = 200
+    for j in range(N):
+        i=i+1
+
+        t = time_ns()
+        sg.updateViz(i)
+        t_new = time_ns()
+        
+        diff = t_new - t
+        t = t_new
+        if(diff < min or min<0):
+            min = diff
+        if diff > max:
+            max = diff
+        mean += diff
+        
+        print(diff/toSec, "s")
+        
+
+    print(f"min = {min/toSec} \nmax = {max/toSec}\nmean = {mean/(N*toSec)}")
+
+        
 
