@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # --- Class ------------------------------------------------------------------------------
-class ShiftingGraph():
+class ShiftingGraph:
     def __init__(self, N_samples=100):
         """ 
         Arguments:
@@ -19,6 +19,7 @@ class ShiftingGraph():
         self.ax.set_ylabel("Measured distance (mm)")
         self.ax.set_xlabel("sample")
         self.line, = self.ax.plot(self.x, self.y, 'r-') # Returns a tuple of line objects, thus the comma
+
 
     def updateViz(self, y_new): 
         # update y-value array (pop & insert new value for right shifting effect)  

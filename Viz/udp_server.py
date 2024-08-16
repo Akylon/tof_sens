@@ -1,4 +1,5 @@
 import socket
+from viz import ShiftingGraph
 
 #localIP     = "146.136.88.23"
 localPort   = 5555
@@ -11,6 +12,14 @@ UDPServerSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
 UDPServerSocket.bind(('', localPort))
 print("UDP server up and listening")
 
+SG = ShiftingGraph()
+
+print("hfgf")
+for i in range(400):
+    print(i)
+    SG.updateViz(i)
+
+
 # Listen for incoming datagrams
 while(True):
 
@@ -19,6 +28,8 @@ while(True):
     message = bytesAddressPair[0]
 
     print(int(message))
+    #SG.updateViz(int(message))
+
     #num = int(message)
     #print(int)
 
@@ -30,6 +41,5 @@ while(True):
     #print(clientMsg)
     #print(clientIP)
 
-    # TODO Call visualization func
 
 
